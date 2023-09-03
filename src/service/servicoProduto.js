@@ -1,5 +1,72 @@
-const Produto = require('../model/Produto');
-var idAtual = 2;
+var idAtual = 0;
+const inputFile = document.querySelector("#picture__input");
+const pictureImage = document.querySelector(".picture__image");
+const pictureImageTxt = "Choose an image";
+
+class Produto {
+    constructor(obj){
+        obj = obj || {};
+        this.id = obj.id;
+        this.nome = obj.nome;
+        this.valor = obj.valor;
+        this.quantidadeEstoque = obj.quantidadeEstoque;
+        this.observacao = obj.observacao;
+        this.foto = obj.foto;
+        this.dataCadastro = obj.dataCadastro;
+    }
+};
+
+pictureImage.innerHTML = pictureImageTxt;
+
+    inputFile.addEventListener("change", function (e) {
+        const inputTarget = e.target;
+        const file = inputTarget.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function (e) {
+                const readerTarget = e.target;
+
+                const img = document.createElement("img");
+                img.src = readerTarget.result;
+                img.classList.add("picture__img");
+
+                pictureImage.innerHTML = "";
+                pictureImage.appendChild(img);
+            });
+
+            reader.readAsDataURL(file);
+        } else {
+            pictureImage.innerHTML = pictureImageTxt;
+        }
+    });
+
+
+document.getElementById("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita o envio padrão do formulário
+    console.log("form")
+    // Capturar os valores dos campos
+    var nome = document.getElementById("nome").value;
+    var quant = document.getElementById("quant").value;
+    var vlr = document.getElementById("vlr").value;
+    var obs = document.getElementById("obs").value;
+
+
+    // Criar um objeto com os valores capturados
+    var produto = {
+        nome: nome,
+        quantidadeEstoque: quant,
+        valor: vlr,
+        foto: pictureImage,
+        dataCadastro:  new Date(),
+        observacao: obs,
+    };
+
+    console.log(cadastrar(produto));
+    
+  
+});
 
 var listaDeProdutos = [
     new Produto({
@@ -19,6 +86,10 @@ var listaDeProdutos = [
         observacao: "Produto original"
     })
 ];
+
+function listaTabela(){
+
+}
 
 function obterTodos(){
     return listaDeProdutos;
@@ -58,11 +129,3 @@ function deletar(id){
     listaDeProdutos.splice(indice, 1);
 }
 
-
-module.exports = {
-    obterTodos,
-    obterPorId,
-    cadastrar,
-    atualizar,
-    deletar
-}

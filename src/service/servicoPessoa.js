@@ -42,10 +42,8 @@ var listaDeClientes = [];
 
 function mostrarLista(){
     for (let i = 0; i < listaDeClientes.length; i++) {
-       console.log(listaDeClientes[i]);
-        
+       console.log(listaDeClientes[i]);      
     }
-
 }
 
 function obterTodos(){
